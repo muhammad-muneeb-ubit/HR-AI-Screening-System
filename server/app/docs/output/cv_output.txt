@@ -1,0 +1,76 @@
+MUHAMMAD MUNEEB 
+Software Engineer | AI/ML Engineer 
+Karachi, Pakistan  |  0306-3845053 / 0340-2199488  |  mohammadmunib1233@gmail.com  |  LinkedIn  |  GitHub 
+PROFESSIONAL SUMMARY 
+Software Engineer with full-stack experience (React, Node.js, Express, MongoDB) and hands-on AI/ML and Generative AI experience, including LLM 
+applications, multi-agent systems, and Retrieval-Augmented Generation (RAG). Skilled in Python, FastAPI, PostgreSQL, LangChain, and LangGraph, with 
+a track record of building production-oriented ML and backend systems during recent AI/ML and Data Engineering internships. 
+TECHNICAL SKILLS 
+Programming: Python, JavaScript, SQL 
+Machine Learning: Scikit-learn, CatBoost, Pandas, NumPy 
+Generative AI / LLM: LangChain, LangGraph, Google GenAI (Gemini), RAG, Vector Databases (pgvector), Hugging Face 
+Backend: FastAPI, Node.js, Express.js, REST APIs, JWT 
+Databases: PostgreSQL, MongoDB, SQL Server 
+Frontend: React.js, Next.js, HTML, CSS, Bootstrap, Tailwind CSS 
+Tools & Deployment: Git, GitHub, Postman, SSIS, Vercel, Render, Railway 
+EXPERIENCE 
+AI/ML Engineer Intern — IBEX 
+July 2026 – Present 
+IT Development 
+● 
+Developed an LLM-powered chatbot using Python, FastAPI, LangChain, Google GenAI (Gemini), React, and PostgreSQL, supporting persistent 
+chat and message management. 
+● 
+Built a Salary Prediction ML pipeline with Python and Scikit-learn, covering preprocessing, model training, and evaluation, deployed via a 
+FastAPI prediction endpoint. 
+● 
+Developed an Activity Prediction model using CatBoost on historical employee activity data to forecast workforce activity patterns. 
+● 
+Built a FastAPI + PostgreSQL agent adherence system that compares scheduled versus actual activity to classify agents as adherent or non-
+adherent. 
+Data Engineer Intern — IBEX 
+Feb 2026 – May 2026 
+IT Development 
+● 
+Built ETL pipelines using SQL, SSIS, and CSV-based sources to extract, clean, and transform large-scale employee activity data for downstream 
+analytics. 
+● 
+Wrote and optimized SQL queries as part of data extraction and transformation workflows. 
+PROJECTS 
+Multi-Agent AI Assistant 
+Python, LangGraph, LangChain, Gemini 
+● 
+Built a supervisor-based multi-agent system that routes user queries to specialized agents for weather, news, currency/commodities, country 
+information, and research. 
+● 
+Integrated Google Gemini for reasoning and tool-calling, connecting each agent to live external APIs for real-time data. 
+● 
+Designed the agent orchestration and state-passing logic so the supervisor coordinates multiple agents through a single entry point. 
+RAG Assistant with Voice Interface 
+FastAPI, PostgreSQL (pgvector), Gemini 
+● 
+Built a Retrieval-Augmented Generation (RAG) assistant using FastAPI, PostgreSQL with pgvector, and Google Gemini to answer questions 
+over custom documents. 
+● 
+Implemented a document ingestion pipeline covering chunking, embedding generation, and vector storage/retrieval. 
+● 
+Added a voice interface for spoken input and output, extending the assistant beyond text-only interaction. 
+Cricket Tournament Management System 
+MERN, Socket.IO, JWT 
+● 
+Developed a full-stack tournament management platform using React, Node.js, Express.js, and MongoDB with role-based access for admins, 
+organizers, and team owners. 
+● 
+Implemented JWT-based authentication with access/refresh tokens and secured the API with Helmet, CORS, and HPP. 
+● 
+Added real-time updates using Socket.IO for live tournament and match information. 
+EDUCATION 
+Bachelor of Science in Software Engineering (BSSE) 
+Feb 2022 – Dec 2025 
+University of Karachi, Karachi, Pakistan  |  CGPA: 3.4 / 4.0 
+TRAINING / CERTIFICATIONS 
+● 
+Web and App Development — course focused on contemporary web technologies and frameworks 
+LANGUAGES 
+Urdu — Native      English — Intermediate 
+

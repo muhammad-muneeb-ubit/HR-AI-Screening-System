@@ -1,7 +1,7 @@
 from fastapi import FastAPI
-from app.db.database import get_connection
 from app.api.routes.jobs import router as jobs_router
 from app.api.routes.skills import router as skills_router
+from app.api.routes.llm import router as llm_router
 
 app = FastAPI(
     title="AI Resume Screening System",
@@ -26,7 +26,13 @@ app.include_router(
     jobs_router,
     prefix="/api"
 )
+
 app.include_router(
     skills_router,
+    prefix="/api"
+)
+
+app.include_router(
+    llm_router,
     prefix="/api"
 )
