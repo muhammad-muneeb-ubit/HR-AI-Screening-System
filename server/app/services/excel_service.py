@@ -1,15 +1,15 @@
 from io import BytesIO
-
+import re
 from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment
 from openpyxl.utils import get_column_letter
 
 
-def create_analysis_excel(rows):
+def create_analysis_excel(rows, job_title):
+    print("Creating Excel file for job title:", job_title)
     workbook = Workbook()
     worksheet = workbook.active
-    worksheet.title = "Resume Analysis"
-
+    worksheet.title = f"{job_title} - Resume Analysis"
     headers = [
         "File Name",
         "Candidate Name",
@@ -36,13 +36,16 @@ def create_analysis_excel(rows):
 
     # Add data
     for row in rows:
+        # print("wof ", row["score"]*100)
+        # print("wf", float(row["score"]*100))
+        # print("wi", int(row["score"]*100))
         worksheet.append([
             row["file_name"],
             row["candidate_name"],
             row["candidate_email"],
             row["candidate_phone"],
             row["status"],
-            float(row["score"]) if row["score"] is not None else None,
+            int(row["score"]*100) if row["score"] is not None else None,
             row["skills_analysis"],
             row["experience_analysis"],
             row["qualifications_analysis"],
@@ -91,3 +94,15 @@ def create_analysis_excel(rows):
     output.seek(0)
 
     return output
+
+def clean_sheet_title(title):
+    title = str(title).strip()
+
+    # Remove Excel-invalid characters
+    title = re.sub(r'[\\/*?:\[\]]', '-', title)
+
+    # Excel sheet name max length = 31
+    title = title[:31]
+
+    # Excel doesn't like an empty sheet name
+    return title or "Sheet1"

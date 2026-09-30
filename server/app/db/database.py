@@ -2,6 +2,7 @@ import os
 import psycopg2
 from dotenv import load_dotenv
 from psycopg2.extras import RealDictCursor
+
 from app.core.config import (
     DB_HOST,
     DB_PORT,
@@ -12,7 +13,8 @@ from app.core.config import (
 
 
 def get_connection():
-    return psycopg2.connect(
+    try:
+        return psycopg2.connect(
         host=DB_HOST,
         port=DB_PORT,
         dbname=DB_NAME,
@@ -20,3 +22,6 @@ def get_connection():
         password=DB_PASSWORD,
         cursor_factory=RealDictCursor,
     )
+    except Exception as e:
+        print("Error connecting to the database:", repr(e))
+        raise

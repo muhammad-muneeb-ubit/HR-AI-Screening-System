@@ -43,7 +43,6 @@ def extract_text_and_call_llm(pdf_path, job_description, file_name, job_id):
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
             RETURNING id;
         """
-
         analysis_values = (
             resume_id,
             job_id,
@@ -56,9 +55,10 @@ def extract_text_and_call_llm(pdf_path, job_description, file_name, job_id):
         )
 
         cursor.execute(analysis_query, analysis_values)
-
         analysis_id = cursor.fetchone()["id"]
+        
         print(f"Inserted analysis with ID: {analysis_id} for resume ID: {resume_id}")
+
         connection.commit()
     except Exception:
         if connection:
@@ -71,3 +71,26 @@ def extract_text_and_call_llm(pdf_path, job_description, file_name, job_id):
             connection.close()
     return extracted_texts, response
 
+def auditLogEntry(job_title, file_name, status, error=None):
+    connection = None
+    cursor = None
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        query = """
+            INSERT INTO audit_logs ( job_title,file_name,status,"error" )
+            VALUES (%s, %s, %s, %s);
+        """
+        values = (job_title, file_name, status, error)
+        cursor.execute(query, values)
+        connection.commit()
+    except Exception as e:
+        print(f"Failed to insert audit log entry for {file_name}: {repr(e)}")
+        if connection:
+            connection.rollback()
+        raise
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
