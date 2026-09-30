@@ -309,7 +309,7 @@ def get_job_info(job_id):
                 GROUP BY j.id, j.title, j.description, j.minimum_score, j.minimum_experience;
         """
         cursor.execute(query, (job_id,))
-        return cursor.fetchall()
+        return cursor.fetchone()
 
     finally:
         if cursor:

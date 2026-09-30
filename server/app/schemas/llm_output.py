@@ -8,6 +8,10 @@ class ScoreBreakdown(BaseModel):
 
 
 class LLMOutput(BaseModel):
+    file_name: str
+    candidate_name: str | None
+    candidate_email: str | None
+    candidate_phone: str | None
     status: Literal["passed", "failed"]
     score: float = Field(ge=0.0, le=1.0)
     score_breakdown: ScoreBreakdown
