@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api' || 'http://localhost:8000/api' || "hr-ai-screening-system.vercel.app";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api' || 'http://localhost:8000/api' || "https://hr-ai-screening-system.vercel.app";
 
 async function request(url, options = {}) {
   const headers = new Headers(options.headers || {});
