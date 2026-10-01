@@ -257,10 +257,11 @@ def export_job_analysis(job_id: int):
         job_title = clean_sheet_title(rows[0]["title"]) if rows else "No Title"
 
         if not rows:
-            raise HTTPException(
-                status_code=404,
-                detail="No resume analysis found for this job"
-            )
+            return {
+                "success": False,
+                "message": "No resume analysis found for this job"
+            }
+
 
         excel_file = create_analysis_excel(rows, job_title)
 
