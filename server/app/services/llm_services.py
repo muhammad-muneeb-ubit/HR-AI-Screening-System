@@ -5,6 +5,87 @@ from app.pdfExtractor import extract_text_from_pdf, invoke_llm
 base_dir = Path(__file__).resolve().parent
 pdf_path = base_dir / "docs" / "Muhammad_Muneeb_CV.pdf"
  
+def get_all_resume():
+    connection = None
+    cursor = None
+
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        query = """
+            SELECT r.id, r.file_name, r.candidate_name, r.candidate_email, r.candidate_phone
+            FROM resumes r
+            ORDER BY r.created_at DESC;
+
+        """
+
+        cursor.execute(query)
+        rows = cursor.fetchall()
+
+        return {
+            "success": True,
+            "count": len(rows),
+            "resumes": rows
+        }
+
+    except Exception as e:
+        if connection:
+            connection.rollback()
+        raise
+
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close() 
+ 
+def delete_resume(resume_id):
+
+    connection = None
+    cursor = None
+
+    try:
+
+        connection = get_connection()
+        cursor = connection.cursor()
+
+        query = """
+            DELETE FROM resumes
+            WHERE id = %s
+            RETURNING id;
+        """
+
+        cursor.execute(
+            query,
+            (resume_id,)
+        )
+
+        deleted_resume = cursor.fetchone()
+        print("Deleted resume:", deleted_resume)
+        if not deleted_resume:
+            connection.rollback()
+            return None
+
+        connection.commit()
+
+        return deleted_resume
+
+    except Exception as e:
+        print("Error deleting resume:", repr(e))
+
+        if connection:
+            connection.rollback()
+
+        raise
+
+    finally:
+
+        if cursor:
+            cursor.close()
+
+        if connection:
+            connection.close()
+ 
 def extract_text_and_call_llm(pdf_path, job_description, file_name, job_id):
 
     extracted_texts = extract_text_from_pdf(pdf_path)
@@ -94,3 +175,102 @@ def auditLogEntry(job_title, file_name, status, error=None):
             cursor.close()
         if connection:
             connection.close()
+
+def analyze_results_for_specific_job(job_id):
+   
+    connection = None
+    cursor = None
+
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        query = """
+            select j.title, r.file_name, r.candidate_name, r.candidate_email, r.candidate_phone, a.status, a.score, a.skills_analysis, a.experience_analysis, a.qualifications_analysis, a.overall_response, a.created_at
+            FROM analysis a
+            JOIN resumes r
+                ON a.resume_id = r.id
+            JOIN jobs j
+                ON j.id = a.job_id
+            WHERE a.job_id = %s
+            ORDER BY a.score DESC, a.created_at DESC;
+        """
+
+        cursor.execute(query, (job_id,))
+
+        rows = cursor.fetchall()
+        
+        if not rows:
+            return{
+                "success": False,
+                "message": "No resume analysis found for this job"
+            }
+        return {
+        "success": True,    
+        "rows": rows
+        }
+            
+    except Exception:
+    
+            if connection:
+                connection.rollback()
+    
+            raise
+    
+    finally:
+    
+            if cursor:
+                cursor.close()
+    
+            if connection:
+                connection.close()
+
+def analyze_results_for_specific_analysis(analysis_id):
+   
+    connection = None
+    cursor = None
+
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        query = """
+            select j.title, r.file_name, r.candidate_name, r.candidate_email, r.candidate_phone, a.status, a.score, a.skills_analysis, a.experience_analysis, a.qualifications_analysis, a.overall_response, a.created_at
+            FROM analysis a
+            JOIN resumes r
+                ON a.resume_id = r.id
+            JOIN jobs j
+                ON j.id = a.job_id
+                WHERE a.id = %s
+            ORDER BY a.score DESC, a.created_at DESC;
+
+        """
+
+        cursor.execute(query, (analysis_id,))
+
+        row = cursor.fetchone()
+        
+        if not row:
+            return{
+                "success": False,
+                "message": "No specific analysis found for this analysis ID"
+            }
+        return {
+        "success": True,    
+        "rows": row
+        }
+            
+    except Exception:
+    
+            if connection:
+                connection.rollback()
+    
+            raise
+    
+    finally:
+    
+            if cursor:
+                cursor.close()
+    
+            if connection:
+                connection.close()
+                
+                

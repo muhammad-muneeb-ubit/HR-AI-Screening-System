@@ -363,3 +363,4 @@ def remove_skill_from_job(job_id, skill_id):
 
         if connection:
             connection.close()
+            

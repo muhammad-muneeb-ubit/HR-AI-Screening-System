@@ -106,3 +106,4 @@ def clean_sheet_title(title):
 
     # Excel doesn't like an empty sheet name
     return title or "Sheet1"
+

@@ -6,7 +6,8 @@ from app.services.skill_service import (
     create_skill,
     get_all_skills,
     get_skill_by_id,
-    delete_skill
+    delete_skill,
+    update_skill
 )
 
 
@@ -43,7 +44,6 @@ def create_skill_api(skill: SkillCreate):
             detail="Failed to create skill"
         )
 
-
 @router.get("/")
 def get_skills():
 
@@ -63,7 +63,6 @@ def get_skills():
             status_code=500,
             detail="Failed to fetch skills"
         )
-
 
 @router.get("/{skill_id}")
 def get_skill(skill_id: int):
@@ -94,6 +93,35 @@ def get_skill(skill_id: int):
             detail="Failed to fetch skill"
         )
 
+@router.put("/{skill_id}")
+def update_skill_api(skill_id: int, skill: SkillCreate):
+
+    try:
+
+        updated_skill = update_skill(skill_id, skill_name=skill.name)
+
+        if not updated_skill:
+
+            raise HTTPException(
+                status_code=404,
+                detail="Skill not found"
+            )
+
+        return {
+            "success": True,
+            "message": "Skill updated successfully",
+            "skill": updated_skill
+        }
+
+    except HTTPException:
+        raise
+
+    except Exception as e:
+        print(f"Error updating skill {skill_id}: {repr(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to update skill"
+        )
 
 @router.delete("/{skill_id}")
 def delete_skill_api(skill_id: int):

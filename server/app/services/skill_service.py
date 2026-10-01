@@ -43,7 +43,6 @@ def create_skill(skill_data):
         if connection:
             connection.close()
 
-
 def get_all_skills():
 
     connection = None
@@ -73,7 +72,6 @@ def get_all_skills():
 
         if connection:
             connection.close()
-
 
 def get_skill_by_id(skill_id):
 
@@ -108,7 +106,6 @@ def get_skill_by_id(skill_id):
         if connection:
             connection.close()
 
-
 def delete_skill(skill_id):
 
     connection = None
@@ -139,6 +136,55 @@ def delete_skill(skill_id):
         connection.commit()
 
         return deleted_skill
+
+    except Exception:
+
+        if connection:
+            connection.rollback()
+
+        raise
+
+    finally:
+
+        if cursor:
+            cursor.close()
+
+        if connection:
+            connection.close()
+            
+def update_skill(skill_id, skill_name):
+
+    connection = None
+    cursor = None
+
+    try:
+
+        connection = get_connection()
+        cursor = connection.cursor()
+
+        query = """
+            UPDATE skills
+            SET name = %s
+            WHERE id = %s
+            RETURNING *;
+        """
+
+        values = (
+            skill_name,
+            skill_id
+        )
+
+        cursor.execute(query, values)
+
+        job = cursor.fetchone()
+
+        if not job:
+            connection.rollback()
+            return None
+
+        connection.commit()
+
+        return job
 
     except Exception:
 
