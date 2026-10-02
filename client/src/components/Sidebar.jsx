@@ -11,8 +11,9 @@ import { getStatus } from '../lib/api';
 const navItems = [
   { to: '/dashboard', label: 'Overview', icon: LayoutGrid },
   { to: '/jobs', label: 'Jobs', icon: BriefcaseBusiness },
-  { to: '/skills', label: 'Skills', icon: Sparkles },
   { to: '/resume', label: 'Resume', icon: UploadCloud },
+  { to: '/analyse/pipeline', label: 'Pipeline', icon: BriefcaseBusiness },
+  { to: '/skills', label: 'Skills', icon: Sparkles },
 ];
 
 export default function Sidebar() {
@@ -64,7 +65,7 @@ export default function Sidebar() {
         <p className="mb-2 text-[10px] font-medium uppercase tracking-[0.2em] text-slate-400">Status</p>
         <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
          {healthStatus === 'ok' ? <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> : <span className="h-2.5 w-2.5 rounded-full bg-rose-500" />}
-          {healthStatus === 'ok' ? 'System healthy' : 'System unhealthy'}
+          {healthStatus === 'ok' ? 'System healthy' : 'System Unhealthy'}
         </div>
       </div>
     </aside>

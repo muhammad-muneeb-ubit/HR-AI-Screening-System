@@ -5,6 +5,7 @@ import Sidebar from './components/Sidebar';
 import { PageSkeleton } from './components/SkeletonLoader';
 import DashboardPage from './pages/DashboardPage';
 import JobsPage from './pages/JobsPage';
+import JobPipelinePage from './pages/JobPipelinePage';
 import SkillsPage from './pages/SkillsPage';
 import ResumePage from './pages/ResumePage';
 import JobDetailPage from './pages/JobDetailPage';
@@ -13,14 +14,18 @@ import { getJobs } from './lib/api';
 
 const routeTitles = {
   '/dashboard': 'Hiring overview',
-  '/jobs': 'Jobs',
+  '/jobs': 'All jobs',
+  '/jobs/pipeline': 'Job pipeline',
   '/skills': 'Skills',
   '/resume': 'Resume analysis',
 };
 
 function getCurrentTitle(pathname) {
   if (pathname.startsWith('/jobs/')) {
-    return 'Job details';
+    if (pathname.includes('/pipeline')) {
+      return 'Job pipeline';
+    }
+    return 'Job analysis';
   }
 
   return routeTitles[pathname] || 'Hiring overview';
@@ -77,7 +82,7 @@ function AppLayout() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => navigate('/jobs')}
+                  onClick={() => navigate('/analyse/pipeline')}
                   className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-3 py-2 text-sm font-medium text-white"
                 >
                   <Plus className="h-4 w-4" />
@@ -91,29 +96,10 @@ function AppLayout() {
             ) : (
               <Routes>
                 <Route path="/" element={<Navigate to="/dashboard" replace />} />
-                <Route
-                  path="/dashboard"
-                  element={
-                    <DashboardPage
-                      jobs={jobs}
-                      onOpenJobs={() => navigate('/jobs')}
-                      onOpenJob={(jobId) => navigate(`/jobs/${jobId}`)}
-                    />
-                  }
-                />
-                <Route
-                  path="/jobs"
-                  element={<JobsPage jobs={jobs} setJobs={setJobs} onOpenJob={(jobId) => navigate(`/jobs/${jobId}`)} />}
-                />
-                <Route
-                  path="/jobs/:jobId"
-                  element={
-                    <JobDetailPage
-                      onGoBack={() => navigate('/jobs')}
-                      onOpenResume={() => navigate('/resume')}
-                    />
-                  }
-                />
+                <Route path="/jobs/:jobId" element={ <JobDetailPage onGoBack={() => navigate('/jobs')} onOpenResume={() => navigate('/resume')} /> } />
+                <Route path="/dashboard" element={<DashboardPage jobs={jobs} onOpenJobs={() => navigate('/jobs')} onOpenJob={(jobId) => navigate(`/jobs/${jobId}`)} /> }/>
+                <Route path="/jobs" element={<JobsPage jobs={jobs} setJobs={setJobs} onOpenJob={(jobId) => navigate(`/jobs/${jobId}`)} />} />
+                <Route path="/analyse/pipeline" element={<JobPipelinePage jobs={jobs} setJobs={setJobs} onOpenAllJobs={() => navigate('/jobs')} onOpenJob={(jobId) => navigate(`/jobs/${jobId}`)} />} />
                 <Route path="/skills" element={<SkillsPage />} />
                 <Route path="/resume" element={<ResumePage jobs={jobs} />} />
                 <Route path="*" element={<NotFoundPage />} />

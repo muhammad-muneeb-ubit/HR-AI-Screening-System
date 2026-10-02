@@ -2,6 +2,7 @@ import { Trash2, UploadCloud } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { CardSkeleton } from '../components/SkeletonLoader';
 import { deleteResume, getAllResumes, getJobs, uploadResumeFiles } from '../lib/api';
+import ResumeAnalysisResultCard from '../components/ResumeAnalysisResultCard';
 
 export default function ResumePage() {
   const [jobs, setJobs] = useState([]);
@@ -13,7 +14,6 @@ export default function ResumePage() {
   const [result, setResult] = useState(null);
   const [error, setError] = useState('');
   const fileInputRef = useRef(null);
-
   useEffect(() => {
     loadJobs();
     loadResumes();
@@ -36,7 +36,8 @@ export default function ResumePage() {
   const loadResumes = async () => {
     try {
       const data = await getAllResumes();
-      setResumes(data.resumes || []);
+    //   console.log('Fetched resumes:', data.resumes.resumes);
+      setResumes(data.resumes.resumes || []);
     } catch (err) {
       console.error('Unable to load resumes:', err);
     }
@@ -54,6 +55,8 @@ export default function ResumePage() {
 
     const formData = new FormData();
     files.forEach((file) => {
+        // console.log('Appending file:', file.name);
+        // console.log('File object:', file);
       formData.append('resume_file', file);
     });
 
@@ -61,8 +64,11 @@ export default function ResumePage() {
     setError('');
 
     try {
-      const response = await uploadResumeFiles(selectedJobId, formData);
+        
+        const response = await uploadResumeFiles(selectedJobId, formData);
+        // console.log('formData:', formData);
       setResult(response);
+    //   console.log('Upload response:', response);
       setFiles([]);
       if (fileInputRef.current) fileInputRef.current.value = '';
       await loadResumes();
@@ -142,11 +148,11 @@ export default function ResumePage() {
         {error ? <p className="mt-3 text-sm text-red-600">{error}</p> : null}
       </div>
 
-      <div className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-sm">
+     {!result && ( <div className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-sm">
         <h3 className="mb-4 text-lg font-semibold text-slate-900">Recent resumes</h3>
         <div className="space-y-3">
-          {resumes.length > 0 ? (
-            resumes.map((resume) => (
+          { resumes.length > 0 ? (
+            resumes.slice(0, 3).map((resume) => (
               <div key={resume.id} className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 md:flex-row md:items-center md:justify-between">
                 <div>
                   <p className="text-sm font-semibold text-slate-900">{resume.file_name}</p>
@@ -167,9 +173,9 @@ export default function ResumePage() {
             ))
           ) : (
             <p className="text-sm text-slate-500">No resumes uploaded yet.</p>
-          )}
+          ) }
         </div>
-      </div>
+      </div>)}
 
       {result ? (
         <div className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-sm">
@@ -181,24 +187,25 @@ export default function ResumePage() {
           </div>
 
           <div className="mt-5 space-y-3">
-            {(result.results || []).map((item, index) => (
-              <div key={`${item.filename}-${index}`} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-slate-900">{item.filename}</p>
-                    <p className="text-xs text-slate-500">{item.job_title}</p>
-                  </div>
-                  <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${item.status === 'completed' ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'}`}>
-                    {item.status}
-                  </span>
-                </div>
-                {item.error ? <p className="mt-2 text-sm text-red-600">{item.error}</p> : null}
-                {item.llm_response ? (
-                  <pre className="mt-3 whitespace-pre-wrap rounded-xl border border-slate-200 bg-white p-3 text-xs text-slate-700">
-                    {typeof item.llm_response === 'string' ? item.llm_response : JSON.stringify(item.llm_response, null, 2)}
-                  </pre>
-                ) : null}
-              </div>
+            {(result.results || []).map((info, index) => (
+            //   <div key={`${item.filename}-${index}`} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+            //     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            //       <div>
+            //         <p className="text-sm font-semibold text-slate-900">{item.filename}</p>
+            //         <p className="text-xs text-slate-500">{item.job_title}</p>
+            //       </div>
+            //       <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${item.status === 'completed' ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'}`}>
+            //         {item.status}
+            //       </span>
+            //     </div>
+            //     {item.error ? <p className="mt-2 text-sm text-red-600">{item.error}</p> : null}
+            //     {item.llm_response ? (
+            //       <pre className="mt-3 whitespace-pre-wrap rounded-xl border border-slate-200 bg-white p-3 text-xs text-slate-700">
+            //         {typeof item.llm_response === 'string' ? item.llm_response : JSON.stringify(item.llm_response, null, 2)}
+            //       </pre>
+            //     ) : null}
+            //   </div>
+                <ResumeAnalysisResultCard key={`${info.filename}-${index}`} info={info} />
             ))}
           </div>
         </div>

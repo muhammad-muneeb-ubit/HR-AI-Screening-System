@@ -102,6 +102,7 @@ async def extract_text_and_llm_call(
             detail="Failed to retrieve job"
         )
     for file in resume_file:
+        print("all resumes: ", file.filename,  file.size)
         try:
             if file.content_type != "application/pdf":
                 raise ValueError(
