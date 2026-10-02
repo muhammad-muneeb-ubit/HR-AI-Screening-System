@@ -4,7 +4,9 @@ import {
   Sparkles,
   UploadCloud,
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { getStatus } from '../lib/api';
 
 const navItems = [
   { to: '/dashboard', label: 'Overview', icon: LayoutGrid },
@@ -14,8 +16,23 @@ const navItems = [
 ];
 
 export default function Sidebar() {
+    const [healthStatus, setStatus] = useState("Checking...");
+    useEffect(() => {
+        const checkStatus = async () => {
+            try {
+                const status = await getStatus();
+                setStatus(status.status);   
+                // console.log(healthStatus);
+            } catch (error) {
+                console.error('Error checking status:', error);
+            }
+        };
+
+        checkStatus();
+    });
+
   return (
-    <aside className="w-full rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm lg:w-72">
+    <aside className="w-full rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm lg:w-72 h-[920px]">
       <div className="mb-8 flex items-center gap-3">
         <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-900 text-sm font-semibold text-white">
           HR
@@ -46,8 +63,8 @@ export default function Sidebar() {
       <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-4">
         <p className="mb-2 text-[10px] font-medium uppercase tracking-[0.2em] text-slate-400">Status</p>
         <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
-          <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
-          System healthy
+         {healthStatus === 'ok' ? <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> : <span className="h-2.5 w-2.5 rounded-full bg-rose-500" />}
+          {healthStatus === 'ok' ? 'System healthy' : 'System unhealthy'}
         </div>
       </div>
     </aside>

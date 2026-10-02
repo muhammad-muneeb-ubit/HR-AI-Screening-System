@@ -131,7 +131,7 @@ export default function JobsPage({ jobs, setJobs, onOpenJob }) {
             </label>
 
             <label>
-              <span className="mb-1.5 block text-sm font-medium text-slate-700">Minimum experience</span>
+              <span className="mb-1.5 block text-sm font-medium text-slate-700">Minimum experience (years)</span>
               <input
                 type="number"
                 name="minimum_experience"

@@ -34,7 +34,7 @@ export default function DashboardPage({ jobs, onOpenJobs, onOpenJob }) {
     }
   };
 
-  const openJobs = jobs.slice(0, 3);
+  const openJobs = jobs.slice(0, 4);
   const uniqueSkillCount = new Set((jobs || []).flatMap((job) => job.required_skills || [])).size;
 
   return (

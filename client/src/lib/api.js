@@ -43,6 +43,7 @@ export const addJobSkill = (jobId, payload) => request(`/jobs/${jobId}/skills`, 
 export const removeJobSkill = (jobId, skillId) => request(`/jobs/${jobId}/skills/${skillId}`, { method: 'DELETE' });
 
 export const getSkills = () => request('/skills/');
+export const getStatus = () => request('/health');
 export const createSkill = (payload) => request('/skills/', {
   method: 'POST',
   body: JSON.stringify(payload),

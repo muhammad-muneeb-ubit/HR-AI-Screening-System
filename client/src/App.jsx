@@ -53,7 +53,7 @@ function AppLayout() {
         <div className="flex flex-col gap-6 lg:flex-row">
           <Sidebar />
 
-          <main className="flex-1 rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+          <main className="flex-1 rounded-[30px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6 h-[920px] overflow-y-auto">
             <header className="mb-6 flex flex-col gap-4 border-b border-slate-200 pb-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-slate-400">Dashboard</p>
