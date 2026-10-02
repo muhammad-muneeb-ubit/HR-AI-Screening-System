@@ -1,5 +1,5 @@
 // const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api' || 'http://localhost:8000/api' || "https://hr-ai-screening-system.onrender.com/";
-const API_BASE =  "http://localhost:5000/api" || "https://hr-ai-screening-system.onrender.com/api";
+const API_BASE = "https://hr-ai-screening-system.onrender.com/api";
 
 async function request(url, options = {}) {
   const headers = new Headers(options.headers || {});
