@@ -84,9 +84,8 @@
 //   });
 
 
-const API_BASE =
-  import.meta.env.VITE_API_BASE_URL ||
-  'https://hr-ai-screening-system.onrender.com/api';
+// const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://hr-ai-screening-system.onrender.com/api';
+ const API_BASE = "http://localhost:5000/api";
 
 export class ApiError extends Error {
   constructor(message, status = null, type = 'unknown') {

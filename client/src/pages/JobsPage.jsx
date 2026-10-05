@@ -198,6 +198,7 @@ import { useEffect, useState } from 'react'
 import { CardSkeleton } from '../components/SkeletonLoader'
 import ErrorState from '../components/ErrorState'
 import { getJobs } from '../lib/api'
+
 const PAGE_SIZE = 6
 export default function JobsPage({ jobs, setJobs, onOpenJob }) {
     const [isLoading, setIsLoading] = useState(true)
