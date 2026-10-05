@@ -82,7 +82,7 @@ export default function DashboardPage({ jobs, onOpenJobs, onOpenJob }) {
                   <p className="text-base font-semibold text-slate-900">{job.title}</p>
                   <p className="text-sm text-slate-500">{job.description?.slice(0, 80) || 'No description provided'}</p>
                 </div>
-                <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${statuses.Open || 'bg-slate-100 text-slate-700'}`}>
+                <span className={`w-[55px] inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${statuses.Open || 'bg-slate-100 text-slate-700'}`}>
                   Open
                 </span>
               </div>

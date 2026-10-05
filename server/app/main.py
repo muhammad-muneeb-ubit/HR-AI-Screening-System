@@ -14,7 +14,7 @@ app.add_middleware(
     CORSMiddleware,
     # allow_origins= ["*"],
     allow_origins=  [
-        "https://hr-ai-screening-system.vercel.app",
+        # "https://hr-ai-screening-system.vercel.app",
         "http://localhost:5173",
         "http://127.0.0.1:5173",
     ],

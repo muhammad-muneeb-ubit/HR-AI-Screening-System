@@ -116,7 +116,6 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* ================= MOBILE HEADER ================= */}
       <header className="sticky top-0 z-50 flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 shadow-sm lg:hidden">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-sm font-semibold text-white">
@@ -147,7 +146,6 @@ export default function Sidebar() {
         </button>
       </header>
 
-      {/* ================= MOBILE MENU ================= */}
       {mobileMenuOpen && (
         <div className="fixed inset-x-0 top-[65px] z-40 border-b border-slate-200 bg-white p-4 shadow-lg lg:hidden">
           <nav className="space-y-1.5">
@@ -197,7 +195,6 @@ export default function Sidebar() {
         </div>
       )}
 
-      {/* ================= DESKTOP SIDEBAR ================= */}
       <aside className="hidden lg:flex lg:min-h-[900px] lg:w-64 lg:flex-col lg:shrink-0 lg:border-r lg:border-slate-200 lg:bg-white lg:p-5 xl:w-72 rounded-[30px]">
         {/* Logo */}
         <div className="mb-8 flex items-center gap-3">
