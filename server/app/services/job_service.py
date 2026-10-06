@@ -117,6 +117,41 @@ def get_job_by_id(job_id):
 
         if connection:
             connection.close()
+
+
+def get_job_skills(job_id):
+
+    connection = None
+    cursor = None
+
+    try:
+
+        connection = get_connection()
+        cursor = connection.cursor()
+
+        query = """
+            SELECT
+                js.id AS job_skill_id,
+                js.skill_id,
+                js.skill_type,
+                s.name AS skill_name
+            FROM job_skills js
+            JOIN skills s ON s.id = js.skill_id
+            WHERE js.job_id = %s
+            ORDER BY s.name ASC;
+        """
+
+        cursor.execute(query, (job_id,))
+
+        return cursor.fetchall()
+
+    finally:
+
+        if cursor:
+            cursor.close()
+
+        if connection:
+            connection.close()
             
 def update_job(job_id, job_data):
 

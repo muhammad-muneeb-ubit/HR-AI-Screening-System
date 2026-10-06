@@ -242,7 +242,14 @@ export default function JobsPage({ jobs, setJobs, onOpenJob }) {
                     </div>
                 </div> {/* Loading */} {isLoading ? (
                     <CardSkeleton />) : error ? ( /* Error */
-                        <ErrorState title="Unable to load jobs" message={error.message} onRetry={loadJobs} />) : paginatedJobs.length === 0 ? ( /* Empty state */
+                        <ErrorState
+                            title="Unable to load jobs"
+                            message={
+                                error?.message ||
+                                'We could not load the jobs. Please try again.'
+                            }
+                            onRetry={loadJobs}
+                        />  ) : paginatedJobs.length === 0 ? ( /* Empty state */
                             <div className="flex min-h-[250px] items-center justify-center">
                                 <div className="text-center">
                                     <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100">

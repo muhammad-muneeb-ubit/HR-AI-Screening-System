@@ -1,6 +1,16 @@
 from fastapi import APIRouter, HTTPException
 from app.schemas.job import JobCreate
-from app.services.job_service import ( create_job, get_all_jobs, get_job_by_id, update_job, delete_job, add_skill_to_job, get_job_info, remove_skill_from_job)
+from app.services.job_service import (
+    create_job,
+    get_all_jobs,
+    get_job_by_id,
+    update_job,
+    delete_job,
+    add_skill_to_job,
+    get_job_info,
+    get_job_skills,
+    remove_skill_from_job,
+)
 from app.schemas.job_skill import JobSkillCreate
 
 router = APIRouter(
@@ -187,18 +197,21 @@ def get_specific_job_info(job_id: int):
 
     try:
 
-        job = get_job_info(job_id)
-        print(job)
+        job = get_job_by_id(job_id)
+
         if not job:
-            print(job)
             raise HTTPException(
                 status_code=404,
                 detail="Job not found"
             )
 
+        skills = get_job_skills(job_id)
+
         return {
             "success": True,
-            "job_info": job}
+            "job_info": get_job_info(job_id),
+            "skills": skills
+        }
 
     except HTTPException:
         raise

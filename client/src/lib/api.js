@@ -140,6 +140,89 @@ function getFriendlyError(status, payload) {
 }
 
 
+// async function request(url, options = {}) {
+//   const headers = new Headers(options.headers || {});
+
+//   if (
+//     !(options.body instanceof FormData) &&
+//     options.body &&
+//     !headers.has('Content-Type')
+//   ) {
+//     headers.set('Content-Type', 'application/json');
+//   }
+
+//   let response;
+
+//   try {
+//     response = await fetch(`${API_BASE}${url}`, {
+//       ...options,
+//       headers,
+//     });
+//   } catch (error) {
+//     /*
+//      * fetch() throws TypeError: Failed to fetch when:
+//      *
+//      * - internet is unavailable
+//      * - backend is down
+//      * - Render server is sleeping/unavailable
+//      * - DNS/network problem
+//      * - browser blocks the request
+//      */
+
+//     console.error('Network error:', error);
+
+//     throw new ApiError(
+//       'Unable to connect to the server. Please check your internet connection and try again.',
+//       null,
+//       'network'
+//     );
+//   }
+
+//   /*
+//    * Read response safely
+//    */
+
+//   let payload = null;
+
+//   try {
+//     const contentType = response.headers.get('content-type') || '';
+
+//     payload = contentType.includes('application/json')
+//       ? await response.json()
+//       : await response.text();
+//   } catch (error) {
+//     console.error('Response parsing error:', error);
+
+//     throw new ApiError(
+//       'The server returned an invalid response. Please try again.',
+//       response.status,
+//       'parse'
+//     );
+//   }
+
+//   /*
+//    * Handle HTTP errors
+//    */
+
+//   if (!response.ok) {
+//     const message = getFriendlyError(response.status, payload);
+
+//     console.error('API Error:', {
+//       status: response.status,
+//       url,
+//       payload,
+//     });
+
+//     throw new ApiError(
+//       message,
+//       response.status,
+//       'http'
+//     );
+//   }
+
+//   return payload;
+// }
+
 async function request(url, options = {}) {
   const headers = new Headers(options.headers || {});
 
@@ -159,65 +242,49 @@ async function request(url, options = {}) {
       headers,
     });
   } catch (error) {
-    /*
-     * fetch() throws TypeError: Failed to fetch when:
-     *
-     * - internet is unavailable
-     * - backend is down
-     * - Render server is sleeping/unavailable
-     * - DNS/network problem
-     * - browser blocks the request
-     */
-
     console.error('Network error:', error);
 
-    throw new ApiError(
-      'Unable to connect to the server. Please check your internet connection and try again.',
-      null,
-      'network'
+    throw new Error(
+      'Unable to connect to the server. Please check your internet connection and try again.'
     );
   }
 
-  /*
-   * Read response safely
-   */
+  const contentType = response.headers.get('content-type') || '';
 
-  let payload = null;
+  let payload;
 
   try {
-    const contentType = response.headers.get('content-type') || '';
-
     payload = contentType.includes('application/json')
       ? await response.json()
       : await response.text();
-  } catch (error) {
-    console.error('Response parsing error:', error);
-
-    throw new ApiError(
-      'The server returned an invalid response. Please try again.',
-      response.status,
-      'parse'
-    );
+  } catch {
+    payload = null;
   }
 
-  /*
-   * Handle HTTP errors
-   */
-
   if (!response.ok) {
-    const message = getFriendlyError(response.status, payload);
+    let message = 'Something went wrong. Please try again.';
 
-    console.error('API Error:', {
-      status: response.status,
-      url,
-      payload,
-    });
+    if (typeof payload === 'object' && payload !== null) {
+      if (Array.isArray(payload.detail)) {
+        message = payload.detail
+          .map((item) => item.msg || item.message)
+          .join(', ');
+      } else {
+        message =
+          payload.detail ||
+          payload.message ||
+          payload.error ||
+          message;
+      }
+    } else if (typeof payload === 'string' && payload.trim()) {
+      message = payload;
+    }
 
-    throw new ApiError(
-      message,
-      response.status,
-      'http'
-    );
+    const error = new Error(message);
+    error.status = response.status;
+    error.data = payload;
+
+    throw error;
   }
 
   return payload;

@@ -1,0 +1,47 @@
+/* GlassCard.css */
+
+/* Background container */
+.glass-container {
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("https://picsum.photos/1200/800") no-repeat center/cover;
+}
+
+/* Glassmorphism card */
+.glass-card {
+  width: 300px;
+  padding: 20px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.15); /* Transparent white */
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  color: white;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.glass-card:hover {
+  transform: scale(1.05);
+}
+
+.glass-card h2 {
+  margin-bottom: 10px;
+}
+
+.glass-card button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.3);
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.glass-card button:hover {
+  background: rgba(255, 255, 255, 0.5);
+}

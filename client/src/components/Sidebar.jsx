@@ -83,6 +83,7 @@ import {
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { getStatus } from '../lib/api';
+import GlassCard from './GlassCard';
 
 const navItems = [
   { to: '/dashboard', label: 'Overview', icon: LayoutGrid },
@@ -100,6 +101,7 @@ export default function Sidebar() {
     const checkStatus = async () => {
       try {
         const status = await getStatus();
+        console.log('Status:', status.status);
         setStatus(status.status);
       } catch (error) {
         console.error('Error checking status:', error);
@@ -155,10 +157,9 @@ export default function Sidebar() {
                 to={to}
                 onClick={closeMobileMenu}
                 className={({ isActive }) =>
-                  `flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition ${
-                    isActive
-                      ? 'bg-slate-900 text-white shadow-sm'
-                      : 'text-slate-600 hover:bg-slate-100'
+                  `flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition ${isActive
+                    ? 'bg-slate-900 text-white shadow-sm'
+                    : 'text-slate-600 hover:bg-slate-100'
                   }`
                 }
               >
@@ -176,13 +177,12 @@ export default function Sidebar() {
 
             <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
               <span
-                className={`h-2.5 w-2.5 rounded-full ${
-                  healthStatus === 'ok'
+                className={`h-2.5 w-2.5 rounded-full ${healthStatus === 'ok'
                     ? 'bg-emerald-500'
                     : healthStatus === 'Checking...'
                       ? 'bg-amber-500'
                       : 'bg-rose-500'
-                }`}
+                  }`}
               />
 
               {healthStatus === 'ok'
@@ -220,10 +220,9 @@ export default function Sidebar() {
               key={to}
               to={to}
               className={({ isActive }) =>
-                `flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition ${
-                  isActive
-                    ? 'bg-slate-900 text-white shadow-sm'
-                    : 'text-slate-600 hover:bg-slate-100'
+                `flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition ${isActive
+                  ? 'bg-slate-900 text-white shadow-sm'
+                  : 'text-slate-600 hover:bg-slate-100'
                 }`
               }
             >
@@ -242,13 +241,12 @@ export default function Sidebar() {
 
             <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
               <span
-                className={`h-2.5 w-2.5 rounded-full ${
-                  healthStatus === 'ok'
+                className={`h-2.5 w-2.5 rounded-full ${healthStatus === 'ok'
                     ? 'bg-emerald-500'
                     : healthStatus === 'Checking...'
                       ? 'bg-amber-500'
                       : 'bg-rose-500'
-                }`}
+                  }`}
               />
 
               {healthStatus === 'ok'
@@ -260,6 +258,7 @@ export default function Sidebar() {
           </div>
         </div>
       </aside>
+      {/* {(healthStatus == 'ok') ? null : <GlassCard/>} */}
     </>
   );
 }
