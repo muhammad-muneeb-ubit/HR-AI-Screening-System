@@ -1,3 +1,5 @@
+import re
+
 from app.db.database import get_connection
 from pathlib import Path
 from app.pdfExtractor import extract_text_from_pdf, invoke_llm
@@ -272,5 +274,29 @@ def analyze_results_for_specific_analysis(analysis_id):
     
             if connection:
                 connection.close()
+                
+def extract_email(text: str):
+    match = re.search(
+        r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b',
+        text
+    )
+    return match.group(0) if match else None
+
+
+def extract_phone(text: str):
+    pattern = r'(?<!\d)(?:\+?\d[\d\s().-]{7,}\d)(?!\d)'
+    matches = re.findall(pattern, text)
+
+    return matches[0].strip() if matches else None
+
+
+def extract_header(text: str, lines_count: int = 10):
+    lines = [
+        line.strip()
+        for line in text.splitlines()
+        if line.strip()
+    ]
+
+    return "\n".join(lines[:lines_count])
                 
                 

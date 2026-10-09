@@ -3,7 +3,8 @@ import os
 import tempfile
 from app.services.excel_service import clean_sheet_title
 from fastapi.responses import StreamingResponse
-from app.services.llm_services import analyze_results_for_specific_analysis, extract_text_and_call_llm, auditLogEntry, analyze_results_for_specific_job, get_all_resume, delete_resume
+from app.services.llm_services import analyze_results_for_specific_analysis, extract_text_and_call_llm, auditLogEntry, analyze_results_for_specific_job, get_all_resume, delete_resume, extract_header, extract_phone, extract_email
+
 from app.services.job_service import get_job_info
 from app.services.excel_service import create_analysis_excel
 from app.db.database import get_connection
@@ -127,7 +128,12 @@ async def extract_text_and_llm_call(
             try:
                 auditLogEntry(job["title"], file.filename, "completed", error="no error")
                 extracted_texts, response = (extract_text_and_call_llm( temp_file_path, job_description, file.filename, job_id))
-
+                email = extract_email(extracted_texts)
+                phone = extract_phone(extracted_texts)
+                header = extract_header(extracted_texts)
+                # print("extracted email: ", email)
+                # print("extracted phone: ", phone)
+                # print("extracted header: ", header)
                 output.append({
                     "filename": file.filename,
                     "status": "completed",
